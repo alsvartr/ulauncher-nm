@@ -16,7 +16,7 @@ from ulauncher.api.shared.action.ExtensionCustomAction import ExtensionCustomAct
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
-global usage_cache, profile_cache
+global usage_cache, profile_cache, parent_dir
 usage_cache = {}
 profile_cache = {}
 
@@ -26,16 +26,18 @@ if nmcli == "":
 	logger.error("nmcli executable was not found!")
 	exit()
 
+parent_dir = os.path.dirname(os.path.realpath(__file__))
+
 # Init usage tracking file
-script_directory = os.path.dirname(os.path.realpath(__file__))
-usage_db = os.path.join(script_directory, "usage.json")
+parent_dir = os.path.dirname(os.path.realpath(__file__))
+usage_db = os.path.join(parent_dir, "usage.json")
 if os.path.exists(usage_db):
     with open(usage_db, 'r') as db:
         raw = db.read()
         usage_cache = json.loads(raw)
 
 # Init profiles cache (because NM is very slow on getting details about VPN profiles)
-profile_db = os.path.join(script_directory, "profiles.json")
+profile_db = os.path.join(parent_dir, "profiles.json")
 if os.path.exists(profile_db):
     with open(profile_db, 'r') as db:
         raw = db.read()
@@ -77,7 +79,7 @@ class NMExtension(Extension):
 		desc = type
 		name = profiles[p]
 
-		if os.path.exists("images/%s.svg" % type):
+		if os.path.exists("%s/images/%s.svg" % (parent_dir, type)):
 			icon = type
 		else:
 			icon = "vpn"
@@ -199,17 +201,17 @@ class KeywordQueryEventListener(EventListener):
 	if keyword == extension.preferences["nms"]:
 		term = (event.get_argument() or "").lower()
 		profiles_list = extension.list_settings(term)
-		return RenderResultListAction(profiles_list[:8])
+		return RenderResultListAction(profiles_list[:15])
 
 	if keyword == extension.preferences["nm-vpn"]:
 		term = (event.get_argument() or "").lower()
 		profiles_list = extension.list_vpn(term)
-		return RenderResultListAction(profiles_list[:8])
+		return RenderResultListAction(profiles_list[:15])
 
 	if keyword == extension.preferences["nm-wifi"]:
 		term = (event.get_argument() or "").lower()
 		profiles_list = extension.list_wifi(term)
-		return RenderResultListAction(profiles_list[:8])
+		return RenderResultListAction(profiles_list[:15])
 
 
 class ItemEnterEventListener(EventListener):
