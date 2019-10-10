@@ -29,7 +29,6 @@ if nmcli == "":
 parent_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Init usage tracking file
-parent_dir = os.path.dirname(os.path.realpath(__file__))
 usage_db = os.path.join(parent_dir, "usage.json")
 if os.path.exists(usage_db):
     with open(usage_db, 'r') as db:
