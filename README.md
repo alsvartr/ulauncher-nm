@@ -12,7 +12,8 @@
 
 ## Configuration
 
-- `rescan_wait`: how much time to wait for wifi networks rescan (in seconds)
+- `rescan_interval`: time interval of WIFI networks rescan (in seconds)
+- `rescan_wait`: how much time to wait for wifi networks rescan results (in seconds)
 
 ## Keywords
 
