@@ -38,10 +38,17 @@
       "default_value": "nms"
     },
     {
+      "id": "rescan_interval",
+      "type": "input",
+      "name": "Rescan WIFI interval (in seconds)",
+      "description": "Time interval of WIFI networks rescan",
+      "default_value": "120"
+    },
+    {
       "id": "rescan_wait",
       "type": "input",
       "name": "Rescan WIFI wait time",
-      "description": "How much time to wait for wifi networks rescan (in seconds)",
+      "description": "How much time to wait for wifi networks rescan results (in seconds)",
       "default_value": "2"
     }
   ]

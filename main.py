@@ -29,6 +29,7 @@ if nmcli == "":
 parent_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Init usage tracking file
+parent_dir = os.path.dirname(os.path.realpath(__file__))
 usage_db = os.path.join(parent_dir, "usage.json")
 if os.path.exists(usage_db):
     with open(usage_db, 'r') as db:
@@ -133,18 +134,18 @@ class NMExtension(Extension):
 	global profiles, last_scan
 	profiles = dict()
 	items_cache = []
-	dt = int(time.time())
+	time_now = int(time.time())
 
 	try:
 		last_scan
 	except NameError:
-		last_scan = dt-300
+		last_scan = 0
 
 	try:
-		if dt - last_scan > 120:
+		if time_now - last_scan > int(self.preferences["rescan_interval"]):
 			os.popen("nmcli device wifi rescan")
 			sleep(int(self.preferences["rescan_wait"]))
-			last_scan = dt
+			last_scan = time_now
 
 		wifis = os.popen('nmcli -t device wifi list').read().rstrip()
 		wifis = wifis.split("\n")
